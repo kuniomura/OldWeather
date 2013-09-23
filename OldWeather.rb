@@ -75,14 +75,18 @@ end
 if ARGV.size == 2 then  # 開始日付と最終日付が指定されている
   startdate_str = ARGV[0]
   enddate_str = ARGV[1]
-elsif ARGV.size == 1 then # 開始日付のみ指定されている。最終日付は処理日前日。
+elsif ARGV.size == 1 then # 日数か開始日付のみ指定されている場合。最終日付は処理日前日。
   yesterday = Date.today - 1
   enddate_str = yesterday.to_s
-  begin
-    startdate_str = (yesterday - ARGV[0].to_i).to_s
-  rescue
-    puts "Argument error!! [" + ARGV[0] + "]"
-    abort()
+  if /^[\d]+$/ =~ ARGV[0] then
+    begin
+      startdate_str = (yesterday - ARGV[0].to_i).to_s
+    rescue
+      puts "Argument error!! [" + ARGV[0] + "]"
+      abort()
+    end
+  else
+    startdate_str = ARGV[0]
   end
 else    # 開始日付も最終日付も無し。処理日の2週間前から前日まで。
   yesterday = Date.today - 1
