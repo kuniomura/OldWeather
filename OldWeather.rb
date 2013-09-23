@@ -72,10 +72,10 @@ end
 #     日付（日のみ） \t 最高気温/最低気温 \t天気概要
 #       ...
 #
-if ARGV.size == 2 then
+if ARGV.size == 2 then  # 開始日付と最終日付が指定されている
   startdate_str = ARGV[0]
   enddate_str = ARGV[1]
-elsif ARGV.size == 1 then
+elsif ARGV.size == 1 then # 開始日付のみ指定されている。最終日付は処理日前日。
   yesterday = Date.today - 1
   enddate_str = yesterday.to_s
   begin
@@ -84,7 +84,7 @@ elsif ARGV.size == 1 then
     puts "Argument error!! [" + ARGV[0] + "]"
     abort()
   end
-else
+else    # 開始日付も最終日付も無し。処理日の2週間前から前日まで。
   yesterday = Date.today - 1
   startdate_str = (yesterday-13).to_s
   enddate_str = yesterday.to_s
@@ -107,7 +107,7 @@ else
   date = startdate
   while date <= enddate do
     weather_info = weather.info(date)
-    puts "#{weather_info[0]}#{SEPARATOR}#{weather_info[1]}/#{weather_info[2]}#{SEPARATOR}#{weather_info[3]}"
+    puts "#{date.month}/#{weather_info[0]}#{SEPARATOR}#{weather_info[1]}/#{weather_info[2]}#{SEPARATOR}#{weather_info[3]}"
     date += 1
   end
 end
